@@ -1,232 +1,262 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>通行凭证 - Replica</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- iOS Home Screen full screen -->
+<title>通行凭证</title>
+
+<!-- Icon khi lưu Shortcut trên iPhone -->
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="icon" type="image/png" href="icon.png">
+
+<!-- Hiển thị giống app -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-<!-- iOS Home Screen icon (ảnh trong cùng thư mục) -->
-<link rel="apple-touch-icon" href="icon.png">
+<meta name="apple-mobile-web-app-title" content="通行凭证">
 
 <style>
 :root{
-  --bg:#2b2d3a;
-  --card:#ffffff;
-  --accent:#ffdb4d;
-  --muted:#bfb7a9;
-  --green:#1fb954;
-  --text:#e7d7c7;
-  --dark:#22212a;
+    --yellow:#e5bc47;
+    --text:#f0dfc8;
 }
-html,body{
-  height:100%;
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial;
-  background: url("bg.jpg") no-repeat center center fixed;
-  background-size: cover;
-  color: var(--text);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
+
+html,
+body{
+    width:100%;
+    min-height:100%;
+    font-family:-apple-system,BlinkMacSystemFont,
+        "Segoe UI",Roboto,Arial,sans-serif;
+
+    /* Ảnh nền trong cùng thư mục */
+    background:
+        url("background.jpg")
+        center center / cover
+        no-repeat fixed;
+
+    color:var(--text);
+    overflow-x:hidden;
+}
+
+/* Lớp phủ tối */
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.35);
+    pointer-events:none;
+}
+
 .wrap{
-  max-width:420px;
-  margin:30px auto;
-  padding:20px 12px 60px;
-  box-sizing:border-box;
-  position:relative;
-  min-height:700px;
+    width:100%;
+    max-width:430px;
+    margin:auto;
+    padding:70px 15px 100px;
+    position:relative;
+    z-index:1;
 }
+
 .header-id{
-  text-align:center;
-  color:#f1e2ca;
-  font-size:18px;
-  margin-top:6px;
-  font-weight:500;
+    text-align:center;
+    font-size:18px;
+    margin-bottom:24px;
+    color:#f6ead6;
+    font-weight:500;
+    letter-spacing:.3px;
+    text-shadow:0 1px 3px rgba(0,0,0,.5);
 }
+
 .card{
-  width:80%;
-  margin:24px auto 16px;
-  background:var(--card);
-  border-radius:8px;
-  box-shadow:0 6px 30px rgba(0,0,0,0.45);
-  overflow:visible;
-  position:relative;
+    width:82%;
+    margin:auto;
+    background:#fff;
+    border-radius:8px;
+    overflow:hidden;
+    box-shadow:0 10px 40px rgba(0,0,0,.45);
 }
-.card .top-strip{
-  background:var(--accent);
-  height:64px;
-  border-radius:8px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:#fff;
-  font-size:14px;
-  letter-spacing:0.6px;
+
+.card-top{
+    height:72px;
+    background:var(--yellow);
+    color:#fff4dc;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position:relative;
+    font-size:16px;
+    text-align:center;
+    padding:0 20px;
 }
-.card .top-strip::before,.card .top-strip::after{
-  content:"";
-  position:absolute;
-  width:12px;height:12px;
-  background:var(--accent);
-  transform:translateY(24px);
-  border-radius:50%;
-  z-index:2;
+
+.card-top::before,
+.card-top::after{
+    content:"";
+    position:absolute;
+    width:18px;
+    height:18px;
+    background:rgba(0,0,0,.45);
+    border-radius:50%;
+    bottom:-9px;
 }
-.card .top-strip::before{left:8px;}
-.card .top-strip::after{right:8px;}
-.card .body{
-  padding:20px 28px 30px; 
-  text-align:center;
+
+.card-top::before{
+    left:-9px;
 }
-.timestamp-top{
-  color:#4b4b4b;
-  font-size:16px;
-  margin-bottom:18px;
-  font-weight:500;
+
+.card-top::after{
+    right:-9px;
 }
-.check-wrap{
-  width:88px;
-  height:88px;
-  margin:6px auto 18px;
-  background:var(--accent);
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 8px 20px rgba(255,219,77,0.25);
+
+.card-body{
+    padding:22px 20px 30px;
+    text-align:center;
 }
-.check-wrap svg{width:66px;height:66px;}
-.success-title,
-.success-sub,
-.refresh-qr{
-  color:#4b4b4b;
-  font-weight:500;
+
+#timeText{
+    font-size:16px;
+    color:#111;
+    margin-bottom:10px;
 }
-.success-title{
-  font-size:20px;
-  margin-top:6px;
+
+#qrcode{
+    width:247px;
+    height:247px;
+    margin:auto;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    transition:opacity .25s ease;
 }
-.success-sub{
-  font-size:14px;
-  margin-top:8px;
+
+#qrcode img{
+    width:247px !important;
+    height:247px !important;
+    display:block;
+    image-rendering:pixelated;
 }
-.refresh-qr{
-  margin-top:38px;
-  font-size:13px;
+
+.refresh{
+    margin-top:14px;
+    color:#8c8c8c;
+    font-size:16px;
 }
-.active-block{
-  margin-top:20px;
-  font-size:18px;
-  font-weight:600;
-  line-height:1;
-}
-.active-block .blink-text{
-  color:var(--green);
-  animation:fadePulse 2s infinite;
-  font-weight:400;
-}
-@keyframes fadePulse{
-  0%{opacity:1;}
-  50%{opacity:0;}
-  100%{opacity:1;}
-}
-.active-timer{
-  display:block;
-  color:var(--green);
-  font-size:16px;
-  font-weight:400;
-  margin-top:4px;
-}
+
 .footer-note{
-  margin:24px auto 0;
-  max-width:80%;
-  color:#d7c6b4;
-  font-size:14px;
-  line-height:1.7;
-  text-align:left;
-padding:12px 16px;
-  border-radius:6px;
-  opacity:0.95;
-}
-.footer-note p:first-child{
-  text-indent:32px;
-  margin:0;
-}
-.footer-note p:last-child{
-  margin:0;
-}
-.bottom-graphic{
-  margin-top:40px;
-  opacity:0.08;
-  display:block;
-  width:100%;
-  height:160px;
-  background:
-    radial-gradient(circle at 20% 20%,rgba(255,255,255,0.02),transparent 10%),
-    radial-gradient(circle at 80% 80%,rgba(255,255,255,0.02),transparent 10%);
-}
-@media (min-width:760px){
-  .wrap{max-width:420px;}
+    width:82%;
+    margin:50px auto 0;
+    font-size:15px;
+    line-height:1.75;
+    color:#f3e4d1;
+    text-align:left;
+    text-indent:2em;
+    text-shadow:0 1px 3px rgba(0,0,0,.5);
 }
 </style>
 </head>
+
 <body>
-<div class="wrap" role="main">
-  <div class="header-id">V24090016(<span style="font-weight:600;color:#f9f1e2">Lê Văn Sơn</span>)</div>
-  <div class="card" aria-labelledby="cardTitle">
-    <div class="top-strip">您的设备已符合安全规范</div>
-    <div class="body">
-      <div class="timestamp-top" id="timestamp"></div>
-      <div class="check-wrap" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <circle cx="12" cy="12" r="12" fill="none"/>
-          <path d="M6.5 12.5l3.2 3.2 7.8-8.6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-      <div class="success-title">进场成功</div>
-      <div class="success-sub" id="subtime"></div>
-      <div class="refresh-qr">刷新二维码</div>
-      <div class="active-block">
-        <span class="blink-text">已生效</span>
-        <span class="active-timer" id="timer">02:00</span>
-      </div>
+
+<div class="wrap">
+
+    <div class="header-id">
+        V24060016(Lê Văn Sơn)
     </div>
-  </div>
-  <div class="footer-note">
-    <p>尊敬的员工您好，您已进入企业涉密区域，</p>
-    <p>出于企业安全考虑，您的手机摄像头将被禁止拍摄，感谢您的配合。</p>
-  </div>
-  <div class="bottom-graphic" aria-hidden="true"></div>
+
+    <div class="card">
+
+        <div class="card-top">
+            将二维码对准扫描器刷码出场
+        </div>
+
+        <div class="card-body">
+
+            <div id="timeText"></div>
+
+            <div id="qrcode"></div>
+
+            <div class="refresh">
+                刷新二维码
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="footer-note">
+        尊敬的员工您好，您已进入企业涉密区域，
+        出于企业安全考虑，您的手机摄像头将被禁止拍摄，
+        感谢您的配合。
+    </div>
+
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
 
 <script>
 function updateTime(){
-  const now=new Date();
-  const year=now.getFullYear();
-  const month=String(now.getMonth()+1).padStart(2,'0');
-  const day=String(now.getDate()).padStart(2,'0');
-  const h=String(now.getHours()).padStart(2,'0');
-  const m=String(now.getMinutes()).padStart(2,'0');
-  const s=String(now.getSeconds()).padStart(2,'0');
-  document.getElementById("timestamp").textContent=`${year}-${month}-${day}  ${h}:${m}:${s}`;
-  document.getElementById("subtime").textContent=`${year}-${month}-${day} ${h}:${m}`;
-}
-setInterval(updateTime,1000);
-updateTime();
 
-// Bộ đếm tăng liên tục, bắt đầu từ 2:00
-let totalSeconds=2*60;
-function updateTimer(){
-  totalSeconds++;
-  let minutes=String(Math.floor(totalSeconds/60)).padStart(2,'0');
-  let seconds=String(totalSeconds%60).padStart(2,'0');
-  document.getElementById("timer").textContent=`${minutes}:${seconds}`;
+    const now = new Date();
+
+    const y = now.getFullYear();
+    const m = String(now.getMonth()+1).padStart(2,'0');
+    const d = String(now.getDate()).padStart(2,'0');
+
+    const hh = String(now.getHours()).padStart(2,'0');
+    const mm = String(now.getMinutes()).padStart(2,'0');
+    const ss = String(now.getSeconds()).padStart(2,'0');
+
+    document.getElementById("timeText").innerText =
+        `${y}-${m}-${d} ${hh}:${mm}:${ss}`;
 }
-setInterval(updateTimer,1000);
+
+function createQR(){
+
+    const container =
+        document.getElementById("qrcode");
+
+    container.style.opacity = "0";
+
+    setTimeout(()=>{
+
+        container.innerHTML = "";
+
+        const text =
+            Date.now() + "|" +
+            crypto.randomUUID() + "|" +
+            Math.random().toString(36).repeat(5);
+
+        const qr = qrcode(15,'H');
+
+        qr.addData(text);
+        qr.make();
+
+        container.innerHTML =
+            qr.createImgTag(4,0);
+
+        const img =
+            container.querySelector("img");
+
+        img.style.width = "247px";
+        img.style.height = "247px";
+        img.style.imageRendering = "pixelated";
+
+        container.style.opacity = "1";
+
+    },150);
+}
+
+updateTime();
+setInterval(updateTime,1000);
+
+createQR();
+setInterval(createQR,15000);
 </script>
+
 </body>
 </html>
